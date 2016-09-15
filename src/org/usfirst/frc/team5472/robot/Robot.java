@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.internal.HardwareTimer;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Robot extends IterativeRobot{
@@ -29,11 +30,15 @@ public class Robot extends IterativeRobot{
 	public boolean liftActive = false;
 	public boolean stopped = false;
 	public boolean driver_2 = false;
+	public NetworkTable networktable;
+	public TableListener listener;
 	
 	@Override
 	public void robotInit() {
 		oi = new OI();
 		motion = new AHRS(SPI.Port.kMXP);
+		networktable = NetworkTable.getTable("TowerTracker");
+		networktable.addTableListener(listener = new TableListener("pla.ceh.old.er"));
 	}
 
 	@Override
@@ -52,6 +57,10 @@ public class Robot extends IterativeRobot{
 	@Override
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
+		if(System.currentTimeMillis() - listener.lastUpdate() >= 60L){
+			listener.camera.getImage(listener.getFrame());
+			listener.server.setImage(listener.getFrame());
+		}
 	}
 
 	@Override
@@ -74,6 +83,11 @@ public class Robot extends IterativeRobot{
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
+		
+		if(System.currentTimeMillis() - listener.lastUpdate() >= 60L){
+			listener.camera.getImage(listener.getFrame());
+			listener.server.setImage(listener.getFrame());
+		}
 		
 		if (!oi.getJoystickArray()[0].getIsXbox())
 			joyd_1();
