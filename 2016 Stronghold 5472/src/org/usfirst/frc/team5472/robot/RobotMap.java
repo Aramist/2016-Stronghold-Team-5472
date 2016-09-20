@@ -31,8 +31,8 @@ public class RobotMap {
 
 	public static final int mFrontLeft = 1;
 	public static final int mFrontRight = 2;
-	public static final int mBackLeft = 8;
-	public static final int mBackRight = 7;
+	public static final int mBackLeft = 3;
+	public static final int mBackRight = 4;
 
 	// Motors: Arms
 	// TODO replace placeholder
@@ -40,8 +40,8 @@ public class RobotMap {
 	public static final int armR = 6;
 
 	// Motors: Firing
-	public static final int fireMotorR = 3;
-	public static final int fireMotorL = 4;
+	public static final int fireMotorR = 7;
+	public static final int fireMotorL = 8;
 	public static final int aimMotor = 0;
 
 	// Motor Definitions
