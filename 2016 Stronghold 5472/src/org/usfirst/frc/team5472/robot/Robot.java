@@ -53,8 +53,6 @@ public class Robot extends IterativeRobot {
 
 	@Override
 	public void autonomousInit() {
-		RobotMap.armMotorLeft.setInverted(true);
-		RobotMap.aimingMotor.setInverted(true);
 		RobotMap.driveBackLeft.setInverted(true);
 		RobotMap.driveBackRight.setInverted(true);
 		RobotMap.driveFrontRight.setInverted(true);
@@ -77,8 +75,6 @@ public class Robot extends IterativeRobot {
 			CameraServer.getInstance().startAutomaticCapture("cam0");
 		if (autonomousCommand != null)
 			autonomousCommand.cancel();
-		RobotMap.armMotorLeft.setInverted(true);
-		RobotMap.aimingMotor.setInverted(true);
 		RobotMap.driveBackLeft.setInverted(true);
 		RobotMap.driveBackRight.setInverted(true);
 		RobotMap.driveFrontRight.setInverted(true);
@@ -128,36 +124,13 @@ public class Robot extends IterativeRobot {
 
 		twistDrive();
 
-		if (oi.getJoystickArray()[0].getPOV(0) == RobotMap.armsUpControl
-				|| oi.getJoystickArray()[1].getPOV(0) == RobotMap.armsUpControl) {
-			RobotMap.armMotorLeft.set(0.2);
-			RobotMap.armMotorRight.set(0.2);
-			return;
-		} else if (oi.getJoystickArray()[0].getPOV(0) == RobotMap.armsDownControl
-				|| oi.getJoystickArray()[1].getPOV(0) == RobotMap.armsDownControl) {
-			RobotMap.armMotorLeft.set(-0.4);
-			RobotMap.armMotorRight.set(-0.4);
-		} else {
-			RobotMap.armMotorLeft.set(0.08);
-			RobotMap.armMotorRight.set(0.08);
-		}
-		
 		new JoystickButton(oi.getJoystickArray()[0], RobotMap.shiftGear).whenPressed(new ShiftGearCommand());
 	}
 
 	public void xboxd_2() {
-
-		double aimValue = oi.getJoystickArray()[1].getRawAxis(RobotMap.aimAxisControl);
-		
+		new JoystickButton(oi.getJoystickArray()[1], RobotMap.shiftGear_x).whenPressed(new ShiftGearCommand());
 		new JoystickButton(oi.getJoystickArray()[1], RobotMap.basketUp_x).whenPressed(new BasketUpCommand());
 		new JoystickButton(oi.getJoystickArray()[1], RobotMap.basketDown_x).whenPressed(new BasketDownCommand());
-		
-		if (oi.getJoystickArray()[0].getRawButton(RobotMap.aimUpControl)) {
-			RobotMap.aimingMotor.set(0.6);
-		} else
-			RobotMap.aimingMotor
-					.set(clip(-0.3D, 1.0D, (aimValue / 1.5 >= -0.1) ? (aimValue / 1.5 + 0.2) : (aimValue / 1.5)));
-		SmartDashboard.putNumber("aimValue", RobotMap.aimingMotor.get());
 
 		double y = oi.getJoystickArray()[1].getRawAxis(RobotMap.d_2y);
 		double t = oi.getJoystickArray()[1].getRawAxis(RobotMap.d_2x);
@@ -197,23 +170,15 @@ public class Robot extends IterativeRobot {
 				RobotMap.fireSolenoid.set(false);
 		}
 
-		if (oi.getJoystickArray()[1].getRawAxis(RobotMap.spinOutAxisControl_x) >= RobotMap.spinOutThreshold_x
-				|| oi.getJoystickArray()[0].getRawButton(RobotMap.spinOutControl)) {
-			RobotMap.fireMotorRight.set(-1.00D);
-			RobotMap.fireMotorLeft.set(1.00D);
+		if (oi.getJoystickArray()[1].getRawAxis(RobotMap.spinOutAxisControl_x) >= RobotMap.spinOutThreshold_x) {
+			RobotMap.fireMotor.set(-1.00);
 			rumble(true, true);
-			SmartDashboard.putString("Firing Wheels", "forward");
-		} else if (oi.getJoystickArray()[1].getRawButton(RobotMap.spinInControl_x)
-				|| oi.getJoystickArray()[0].getRawButton(RobotMap.spinInControl)) {
-			RobotMap.fireMotorRight.set(1.00D);
-			RobotMap.fireMotorLeft.set(-1.00D);
+		} else if (oi.getJoystickArray()[1].getRawButton(RobotMap.feedControl_x)) {
+			RobotMap.feedMotor.set(1.00);
 			rumble(false, true);
-			SmartDashboard.putString("Firing Wheels", "reverse");
 		} else {
-			RobotMap.fireMotorRight.set(0.0D);
-			RobotMap.fireMotorLeft.set(0.0D);
+			RobotMap.fireMotor.set(0.00);
 			rumble(false, false);
-			SmartDashboard.putString("Firing Wheels", "off");
 		}
 	}
 

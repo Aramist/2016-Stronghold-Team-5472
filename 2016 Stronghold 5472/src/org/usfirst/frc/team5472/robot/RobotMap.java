@@ -51,10 +51,8 @@ public class RobotMap {
 	public static final VictorSP feedMotor = new VictorSP(fMotor);
 
 	// Driver 1 Assignments
-	public static final int joystickId = 0;
 	public static final int feedControl = 5;
 	public static final int fireControl = 6;
-	public static final int aimUpControl = 3;
 	public static final int shiftGear = 1;
 	// public static final int switchCamera = 6;
 	public static final int twistAxis = 2;
@@ -68,15 +66,11 @@ public class RobotMap {
 	public static final int d_2y = XBOX.LYAXIS.id();
 	public static final int d_2x = XBOX.LXAXIS.id();
 
-	public static final int liftUpControl_x = XBOX.Y.id();
-	public static final int liftDownControl_x = XBOX.A.id();
 	public static final int aimAxisControl = XBOX.RYAXIS.id();
-	public static final int slowAimAxisControl = XBOX.LYAXIS.id();
-	public static final int cancelControl_x = XBOX.B.id();
-	public static final int spinInControl_x = XBOX.LB.id();
-	public static final int swivelControl_x = XBOX.X.id();
+	public static final int feedControl_x = XBOX.LB.id();
 	public static final int basketUp_x = XBOX.A.id();
 	public static final int basketDown_x = XBOX.B.id();
+	public static final int shiftGear_x = XBOX.Y.id();
 
 	// Solenoids
 	public static final int fire = 0;

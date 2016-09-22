@@ -26,10 +26,7 @@ public class AutonomousCommand extends Command {
 		ht.delay(5);
 		Robot.motion.zeroYaw();
 		// TODO Auto-generated method stub
-		RobotMap.armMotorLeft.set(0.1);
-		RobotMap.armMotorRight.set(0.1);
 		HardwareTimer ht = new HardwareTimer();
-		RobotMap.aimingMotor.set(0.6);
 		ht.delay(1.5);
 		RobotMap.driveFrontLeft.set(-1.0D);
 		RobotMap.driveFrontRight.set(1.0D);
@@ -39,13 +36,10 @@ public class AutonomousCommand extends Command {
 		motorStart = System.currentTimeMillis();
 		loopMotors();
 		SmartDashboard.putBoolean("Autonomous Motors", false);
-		RobotMap.aimingMotor.set(0.0);
 		RobotMap.driveFrontLeft.set(0.0);
 		RobotMap.driveFrontRight.set(0.0);
 		RobotMap.driveBackLeft.set(0.0D);
 		RobotMap.driveBackRight.set(0.0D);
-		RobotMap.armMotorLeft.set(0.0);
-		RobotMap.armMotorRight.set(0.0);
 		finished = true;
 	}
 
