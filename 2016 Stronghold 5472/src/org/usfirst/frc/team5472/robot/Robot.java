@@ -2,6 +2,8 @@
 package org.usfirst.frc.team5472.robot;
 
 import org.usfirst.frc.team5472.robot.commands.AutonomousCommand;
+import org.usfirst.frc.team5472.robot.commands.BasketDownCommand;
+import org.usfirst.frc.team5472.robot.commands.BasketUpCommand;
 
 import com.kauailabs.navx.frc.AHRS;
 
@@ -12,6 +14,7 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Joystick.RumbleType;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.internal.HardwareTimer;
@@ -50,7 +53,6 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousInit() {
 		RobotMap.armMotorLeft.setInverted(true);
-		RobotMap.aimingMotor.setInverted(true);
 		RobotMap.driveBackLeft.setInverted(true);
 		RobotMap.driveBackRight.setInverted(true);
 		RobotMap.driveFrontRight.setInverted(true);
@@ -74,7 +76,6 @@ public class Robot extends IterativeRobot {
 		if (autonomousCommand != null)
 			autonomousCommand.cancel();
 		RobotMap.armMotorLeft.setInverted(true);
-		RobotMap.aimingMotor.setInverted(true);
 		RobotMap.driveBackLeft.setInverted(true);
 		RobotMap.driveBackRight.setInverted(true);
 		RobotMap.driveFrontRight.setInverted(true);
@@ -137,19 +138,12 @@ public class Robot extends IterativeRobot {
 			RobotMap.armMotorLeft.set(0.08);
 			RobotMap.armMotorRight.set(0.08);
 		}
-
 	}
 
 	public void xboxd_2() {
-
-		double aimValue = oi.getJoystickArray()[1].getRawAxis(RobotMap.aimAxisControl);
-
-		if (oi.getJoystickArray()[0].getRawButton(RobotMap.aimUpControl)) {
-			RobotMap.aimingMotor.set(0.6);
-		} else
-			RobotMap.aimingMotor
-					.set(clip(-0.3D, 1.0D, (aimValue / 1.5 >= -0.1) ? (aimValue / 1.5 + 0.2) : (aimValue / 1.5)));
-		SmartDashboard.putNumber("aimValue", RobotMap.aimingMotor.get());
+		
+		new JoystickButton(oi.getJoystickArray()[1], RobotMap.basketUp_x).whenPressed(new BasketUpCommand());
+		new JoystickButton(oi.getJoystickArray()[1], RobotMap.basketDown_x).whenPressed(new BasketDownCommand());
 
 		double y = oi.getJoystickArray()[1].getRawAxis(RobotMap.d_2y);
 		double t = oi.getJoystickArray()[1].getRawAxis(RobotMap.d_2x);

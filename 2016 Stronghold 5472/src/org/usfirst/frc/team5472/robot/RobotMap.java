@@ -1,5 +1,6 @@
 package org.usfirst.frc.team5472.robot;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.VictorSP;
 
@@ -35,14 +36,12 @@ public class RobotMap {
 	public static final int mBackRight = 4;
 
 	// Motors: Arms
-	// TODO replace placeholder
 	public static final int armL = 5;
 	public static final int armR = 6;
 
 	// Motors: Firing
 	public static final int fireMotorR = 7;
 	public static final int fireMotorL = 8;
-	public static final int aimMotor = 0;
 
 	// Motor Definitions
 	public static final VictorSP driveFrontLeft = new VictorSP(mFrontLeft);
@@ -51,7 +50,6 @@ public class RobotMap {
 	public static final VictorSP driveBackRight = new VictorSP(mBackRight);
 	public static final VictorSP fireMotorLeft = new VictorSP(fireMotorL);
 	public static final VictorSP fireMotorRight = new VictorSP(fireMotorR);
-	public static final VictorSP aimingMotor = new VictorSP(aimMotor);
 	public static final VictorSP armMotorLeft = new VictorSP(armL);
 	public static final VictorSP armMotorRight = new VictorSP(armR);
 
@@ -62,6 +60,7 @@ public class RobotMap {
 	public static final int spinInControl = 5;
 	public static final int spinOutControl = 6;
 	public static final int aimUpControl = 3;
+	public static final int shiftGear = 1;
 	// public static final int switchCamera = 6;
 	public static final int twistAxis = 2;
 
@@ -81,10 +80,16 @@ public class RobotMap {
 	public static final int cancelControl_x = XBOX.B.id();
 	public static final int spinInControl_x = XBOX.LB.id();
 	public static final int swivelControl_x = XBOX.X.id();
-
+	public static final int basketUp_x = XBOX.A.id();
+	public static final int basketDown_x = XBOX.B.id();
+	
 	// Solenoids
 	public static final int fire = 0;
-
+	public static final int shooterSolenoidA = 1;
+	public static final int shooterSolenoidB = 2;
+	
+	
 	// Solenoid Definitions
 	public static final Solenoid fireSolenoid = new Solenoid(fire);
+	public static final DoubleSolenoid shootingSolenoid = new DoubleSolenoid(shooterSolenoidA, shooterSolenoidB);
 }
