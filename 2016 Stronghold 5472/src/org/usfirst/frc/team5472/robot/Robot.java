@@ -141,8 +141,6 @@ public class Robot extends IterativeRobot {
 			RobotMap.armMotorLeft.set(0.08);
 			RobotMap.armMotorRight.set(0.08);
 		}
-		
-		new JoystickButton(oi.getJoystickArray()[0], RobotMap.shiftGear).whenPressed(new ShiftGearCommand());
 	}
 
 	public void xboxd_2() {
