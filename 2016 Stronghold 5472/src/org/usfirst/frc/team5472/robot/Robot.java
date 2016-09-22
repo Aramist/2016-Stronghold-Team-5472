@@ -4,7 +4,6 @@ package org.usfirst.frc.team5472.robot;
 import org.usfirst.frc.team5472.robot.commands.AutonomousCommand;
 import org.usfirst.frc.team5472.robot.commands.BasketDownCommand;
 import org.usfirst.frc.team5472.robot.commands.BasketUpCommand;
-import org.usfirst.frc.team5472.robot.commands.ShiftGearCommand;
 
 import com.kauailabs.navx.frc.AHRS;
 
