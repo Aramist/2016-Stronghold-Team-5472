@@ -1,5 +1,6 @@
 package org.usfirst.frc.team5472.robot;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.VictorSP;
 
@@ -62,6 +63,7 @@ public class RobotMap {
 	public static final int spinInControl = 5;
 	public static final int spinOutControl = 6;
 	public static final int aimUpControl = 3;
+	public static final int shiftGear = 1;
 	// public static final int switchCamera = 6;
 	public static final int twistAxis = 2;
 
@@ -81,10 +83,18 @@ public class RobotMap {
 	public static final int cancelControl_x = XBOX.B.id();
 	public static final int spinInControl_x = XBOX.LB.id();
 	public static final int swivelControl_x = XBOX.X.id();
-
+	public static final int basketUp_x = XBOX.A.id();
+	public static final int basketDown_x = XBOX.B.id();
+	
 	// Solenoids
 	public static final int fire = 0;
-
+	public static final int gear = 1;
+	public static final int shooterSolenoidA = 2;
+	public static final int shooterSolenoidB = 3;
+	
+	
 	// Solenoid Definitions
 	public static final Solenoid fireSolenoid = new Solenoid(fire);
+	public static final Solenoid gearSolenoid = new Solenoid(gear);
+	public static final DoubleSolenoid shootingSolenoid = new DoubleSolenoid(shooterSolenoidA, shooterSolenoidB);
 }
