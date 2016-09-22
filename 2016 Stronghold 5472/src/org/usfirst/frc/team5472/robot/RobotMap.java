@@ -30,38 +30,30 @@ public class RobotMap {
 	// 5 - Left Arm
 	// 6 - Right Arm
 
-	public static final int mFrontLeft = 1;
-	public static final int mFrontRight = 2;
-	public static final int mBackLeft = 3;
-	public static final int mBackRight = 4;
+	private static final int mFrontLeft = 0;
+	private static final int mFrontRight = 3;
+	private static final int mBackLeft = 1;
+	private static final int mBackRight = 2;
 
 	// Motors: Arms
 	// TODO replace placeholder
-	public static final int armL = 5;
-	public static final int armR = 6;
 
 	// Motors: Firing
-	public static final int fireMotorR = 7;
-	public static final int fireMotorL = 8;
-	public static final int aimMotor = 0;
+	private static final int fiMotor = 4;
+	private static final int fMotor = 5;
 
 	// Motor Definitions
 	public static final VictorSP driveFrontLeft = new VictorSP(mFrontLeft);
 	public static final VictorSP driveFrontRight = new VictorSP(mFrontRight);
 	public static final VictorSP driveBackLeft = new VictorSP(mBackLeft);
 	public static final VictorSP driveBackRight = new VictorSP(mBackRight);
-	public static final VictorSP fireMotorLeft = new VictorSP(fireMotorL);
-	public static final VictorSP fireMotorRight = new VictorSP(fireMotorR);
-	public static final VictorSP aimingMotor = new VictorSP(aimMotor);
-	public static final VictorSP armMotorLeft = new VictorSP(armL);
-	public static final VictorSP armMotorRight = new VictorSP(armR);
+	public static final VictorSP fireMotor = new VictorSP(fiMotor);
+	public static final VictorSP feedMotor = new VictorSP(fMotor);
 
 	// Driver 1 Assignments
 	public static final int joystickId = 0;
-	public static final int armsUpControl = 0;
-	public static final int armsDownControl = 180;
-	public static final int spinInControl = 5;
-	public static final int spinOutControl = 6;
+	public static final int feedControl = 5;
+	public static final int fireControl = 6;
 	public static final int aimUpControl = 3;
 	public static final int shiftGear = 1;
 	// public static final int switchCamera = 6;
@@ -85,14 +77,13 @@ public class RobotMap {
 	public static final int swivelControl_x = XBOX.X.id();
 	public static final int basketUp_x = XBOX.A.id();
 	public static final int basketDown_x = XBOX.B.id();
-	
+
 	// Solenoids
 	public static final int fire = 0;
 	public static final int gear = 1;
 	public static final int shooterSolenoidA = 2;
 	public static final int shooterSolenoidB = 3;
-	
-	
+
 	// Solenoid Definitions
 	public static final Solenoid fireSolenoid = new Solenoid(fire);
 	public static final Solenoid gearSolenoid = new Solenoid(gear);
