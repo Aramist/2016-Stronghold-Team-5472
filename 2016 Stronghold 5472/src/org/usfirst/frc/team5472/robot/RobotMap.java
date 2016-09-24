@@ -39,8 +39,8 @@ public class RobotMap {
 	// TODO replace placeholder
 
 	// Motors: Firing
-	private static final int fiMotor = 4;
-	private static final int fMotor = 5;
+	private static final int fiMotor = 5;
+	private static final int fMotor = 4;
 
 	// Motor Definitions
 	public static final VictorSP driveFrontLeft = new VictorSP(mFrontLeft);
@@ -58,28 +58,28 @@ public class RobotMap {
 	public static final int twistAxis = 2;
 
 	// Driver 2 Assignments
-	public static final int triggerAxisControl_x = XBOX.RT.id();
-	public static final double triggerThreshold = 0.8;
-	public static final int spinOutAxisControl_x = XBOX.LT.id();
-	public static final double spinOutThreshold_x = 0.8;
+	// public static final int triggerAxisControl_x = XBOX.LT.id();
+	// public static final double triggerThreshold = 0.8;
+	public static final int shootOutAxisControl_x = XBOX.RT.id();
+	public static final double shootOutThreshold_x = 0.8;
 
 	public static final int d_2y = XBOX.LYAXIS.id();
 	public static final int d_2x = XBOX.LXAXIS.id();
 
 	public static final int aimAxisControl = XBOX.RYAXIS.id();
-	public static final int feedControl_x = XBOX.LB.id();
+	public static final int feedInControl_x = XBOX.LB.id();
+	public static final int feedOutControl_x = XBOX.LT.id();
 	public static final int basketUp_x = XBOX.A.id();
-	public static final int basketDown_x = XBOX.B.id();
-	public static final int shiftGear_x = XBOX.Y.id();
+	public static final int basketDown_x = XBOX.X.id();
+	public static final int shiftLowGear_x = XBOX.B.id();
+	public static final int shiftHighGear_x = XBOX.Y.id();
 
 	// Solenoids
-	public static final int fire = 0;
-	public static final int gear = 1;
-	public static final int shooterSolenoidA = 2;
-	public static final int shooterSolenoidB = 3;
+	public static final int gear = 0;
+	public static final int shooterSolenoidA = 1;
+	public static final int shooterSolenoidB = 2;
 
 	// Solenoid Definitions
-	public static final Solenoid fireSolenoid = new Solenoid(fire);
 	public static final Solenoid gearSolenoid = new Solenoid(gear);
 	public static final DoubleSolenoid shootingSolenoid = new DoubleSolenoid(shooterSolenoidA, shooterSolenoidB);
 }

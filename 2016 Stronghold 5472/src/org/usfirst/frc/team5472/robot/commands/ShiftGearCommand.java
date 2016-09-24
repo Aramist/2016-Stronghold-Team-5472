@@ -4,24 +4,25 @@ import org.usfirst.frc.team5472.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class ShiftGearCommand extends Command{
+public class ShiftGearCommand extends Command {
 
 	private static boolean active = false;
-	
+
 	public ShiftGearCommand() {
 		super();
 	}
 
 	@Override
-	protected void initialize() {}
+	protected void initialize() {
+	}
 
 	@Override
 	protected void execute() {
-		if(active){
-			//deactivate
+		if (active) {
+			// deactivate
 			RobotMap.gearSolenoid.set(false);
-		}else{
-			//activate
+		} else {
+			// activate
 			RobotMap.gearSolenoid.set(true);
 		}
 		active = !active;
@@ -33,9 +34,11 @@ public class ShiftGearCommand extends Command{
 	}
 
 	@Override
-	protected void end() {}
+	protected void end() {
+	}
 
 	@Override
-	protected void interrupted() {}
+	protected void interrupted() {
+	}
 
 }

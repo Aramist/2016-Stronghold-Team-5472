@@ -4,17 +4,17 @@ package org.usfirst.frc.team5472.robot;
 import org.usfirst.frc.team5472.robot.commands.AutonomousCommand;
 import org.usfirst.frc.team5472.robot.commands.BasketDownCommand;
 import org.usfirst.frc.team5472.robot.commands.BasketUpCommand;
-import org.usfirst.frc.team5472.robot.commands.ShiftGearCommand;
 
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Joystick.RumbleType;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -29,7 +29,7 @@ public class Robot extends IterativeRobot {
 	public static AHRS motion;
 	public static DriverStation driverStation = DriverStation.getInstance();
 	Command autonomousCommand = null;
-	public CameraServer server;
+	// public CameraServer server;
 	public boolean triggerRunning = false;
 	public boolean cannonUp = false;
 	public boolean cannonActive = false;
@@ -54,8 +54,9 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousInit() {
 		RobotMap.driveBackLeft.setInverted(true);
-		RobotMap.driveBackRight.setInverted(true);
-		RobotMap.driveFrontRight.setInverted(true);
+		RobotMap.driveFrontLeft.setInverted(true);
+		RobotMap.driveBackRight.setInverted(false);
+		RobotMap.driveFrontRight.setInverted(false);
 		motion.zeroYaw();
 		new AutonomousCommand().start();
 
@@ -70,14 +71,15 @@ public class Robot extends IterativeRobot {
 
 	@Override
 	public void teleopInit() {
-		CameraServer.getInstance().setQuality(40);
-		if (!CameraServer.getInstance().isAutoCaptureStarted())
-			CameraServer.getInstance().startAutomaticCapture("cam0");
+		// CameraServer.getInstance().setQuality(40);
+		// if (!CameraServer.getInstance().isAutoCaptureStarted())
+		// CameraServer.getInstance().startAutomaticCapture("cam0");
 		if (autonomousCommand != null)
 			autonomousCommand.cancel();
 		RobotMap.driveBackLeft.setInverted(true);
-		RobotMap.driveBackRight.setInverted(true);
-		RobotMap.driveFrontRight.setInverted(true);
+		RobotMap.driveFrontLeft.setInverted(true);
+		RobotMap.driveBackRight.setInverted(false);
+		RobotMap.driveFrontRight.setInverted(false);
 	}
 
 	@Override
@@ -108,7 +110,7 @@ public class Robot extends IterativeRobot {
 		// SmartDashboard.getNumber("Brightness"));
 		// cams.get(currentCamera).getImage(i);
 		SmartDashboard.putNumber("Velocity", motion.getVelocityZ());
-		double pressureValue = (250.0 * (pressureSensor.getVoltage() / 5.0)) - 15.0;
+		double pressureValue = (250.0 * (pressureSensor.getVoltage() / 4.95)) - 25.0;
 		SmartDashboard.putNumber("Pressure", pressureValue);
 		SmartDashboard.putNumber("Yaw", motion.getYaw());
 		if (!oi.getJoystickArray()[0].getIsXbox())
@@ -123,12 +125,31 @@ public class Robot extends IterativeRobot {
 	public void joyd_1() {
 
 		twistDrive();
-
-		new JoystickButton(oi.getJoystickArray()[0], RobotMap.shiftGear).whenPressed(new ShiftGearCommand());
+		if (oi.getJoystickArray()[0].getRawButton(RobotMap.shiftGear)) {
+			RobotMap.gearSolenoid.set(true);
+			Timer.delay(0.05);
+		} else {
+			RobotMap.gearSolenoid.set(false);
+			Timer.delay(0.05);
+		}
 	}
 
 	public void xboxd_2() {
-		new JoystickButton(oi.getJoystickArray()[1], RobotMap.shiftGear_x).whenPressed(new ShiftGearCommand());
+
+		if (oi.getJoystickArray()[1].getRawButton(RobotMap.basketUp_x)) {
+			if (!RobotMap.shootingSolenoid.get().equals(Value.kForward)) {
+				RobotMap.shootingSolenoid.set(Value.kForward);
+				Timer.delay(0.01);
+			}
+		}
+
+		if (oi.getJoystickArray()[1].getRawButton(RobotMap.basketDown_x)) {
+			if (!RobotMap.shootingSolenoid.get().equals(Value.kReverse)) {
+				RobotMap.shootingSolenoid.set(Value.kReverse);
+				Timer.delay(0.05);
+			}
+		}
+
 		new JoystickButton(oi.getJoystickArray()[1], RobotMap.basketUp_x).whenPressed(new BasketUpCommand());
 		new JoystickButton(oi.getJoystickArray()[1], RobotMap.basketDown_x).whenPressed(new BasketDownCommand());
 
@@ -159,25 +180,24 @@ public class Robot extends IterativeRobot {
 			RobotMap.driveBackLeft.set(tankLeft);
 			RobotMap.driveBackRight.set(tankRight);
 		}
-
-		double trigger = oi.getJoystickArray()[1].getRawAxis(RobotMap.triggerAxisControl_x);
-		if (trigger >= RobotMap.triggerThreshold && !this.triggerRunning) {
-			rumble(true, true);
-			RobotMap.fireSolenoid.set(true);
-			rumble(true, false);
-		} else {
-			if (RobotMap.fireSolenoid.get())
-				RobotMap.fireSolenoid.set(false);
-		}
-
-		if (oi.getJoystickArray()[1].getRawAxis(RobotMap.spinOutAxisControl_x) >= RobotMap.spinOutThreshold_x) {
+		boolean a = oi.getJoystickArray()[1].getRawAxis(RobotMap.shootOutAxisControl_x) >= RobotMap.shootOutThreshold_x;
+		boolean b = oi.getJoystickArray()[1].getRawButton(RobotMap.feedInControl_x);
+		boolean c = oi.getJoystickArray()[1].getRawButton(RobotMap.feedOutControl_x);
+		if (a) {
 			RobotMap.fireMotor.set(-1.00);
+			// RobotMap.shootingSolenoid.set(Value.kForward);
 			rumble(true, true);
-		} else if (oi.getJoystickArray()[1].getRawButton(RobotMap.feedControl_x)) {
+		}
+		if (b) {
 			RobotMap.feedMotor.set(1.00);
 			rumble(false, true);
-		} else {
+		} else if (c) {
+			RobotMap.feedMotor.set(-1.00);
+			rumble(false, true);
+		}
+		if (!a && !b && !c) {
 			RobotMap.fireMotor.set(0.00);
+			RobotMap.feedMotor.set(0.00);
 			rumble(false, false);
 		}
 	}
@@ -189,13 +209,6 @@ public class Robot extends IterativeRobot {
 			oi.getJoystickArray()[1].setRumble(RumbleType.kLeftRumble, 0.0F);
 			oi.getJoystickArray()[1].setRumble(RumbleType.kRightRumble, 0.0F);
 		}
-	}
-
-	public void fire() {
-		if (oi.getJoystickArray()[1].getRawAxis(RobotMap.triggerAxisControl_x) >= RobotMap.triggerThreshold)
-			RobotMap.fireSolenoid.set(true);
-		else
-			RobotMap.fireSolenoid.set(false);
 	}
 
 	public void twistDrive() {
