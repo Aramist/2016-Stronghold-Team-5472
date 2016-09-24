@@ -2,8 +2,6 @@
 package org.usfirst.frc.team5472.robot;
 
 import org.usfirst.frc.team5472.robot.commands.AutonomousCommand;
-import org.usfirst.frc.team5472.robot.commands.BasketDownCommand;
-import org.usfirst.frc.team5472.robot.commands.BasketUpCommand;
 
 import com.kauailabs.navx.frc.AHRS;
 
@@ -15,7 +13,6 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Joystick.RumbleType;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.internal.HardwareTimer;
@@ -150,10 +147,7 @@ public class Robot extends IterativeRobot {
 			}
 		}
 
-		RobotMap.aimMotor.set(oi.getJoystickArray()[1].getRawAxis(RobotMap.aimAxisControl) / 1.4);
-
-		new JoystickButton(oi.getJoystickArray()[1], RobotMap.basketUp_x).whenPressed(new BasketUpCommand());
-		new JoystickButton(oi.getJoystickArray()[1], RobotMap.basketDown_x).whenPressed(new BasketDownCommand());
+		RobotMap.aimMotor.set(0.2 + oi.getJoystickArray()[1].getRawAxis(RobotMap.aimAxisControl) / 2.0);
 
 		double y = oi.getJoystickArray()[1].getRawAxis(RobotMap.d_2y);
 		double t = oi.getJoystickArray()[1].getRawAxis(RobotMap.d_2x);
@@ -191,10 +185,10 @@ public class Robot extends IterativeRobot {
 			rumble(true, true);
 		}
 		if (b) {
-			RobotMap.feedMotor.set(1.00);
+			RobotMap.feedMotor.set(0.70);
 			rumble(false, true);
 		} else if (c) {
-			RobotMap.feedMotor.set(-1.00);
+			RobotMap.feedMotor.set(-0.70);
 			rumble(false, true);
 		}
 		if (!a && !b && !c) {

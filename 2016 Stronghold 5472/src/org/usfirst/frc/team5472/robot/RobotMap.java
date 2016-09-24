@@ -69,8 +69,8 @@ public class RobotMap {
 	public static final int d_2x = XBOX.LXAXIS.id();
 
 	public static final int aimAxisControl = XBOX.RYAXIS.id();
-	public static final int feedInControl_x = XBOX.LB.id();
-	public static final int feedOutControl_x = XBOX.LT.id();
+	public static final int feedInControl_x = XBOX.RB.id();
+	public static final int feedOutControl_x = XBOX.LB.id();
 	public static final int basketUp_x = XBOX.A.id();
 	public static final int basketDown_x = XBOX.X.id();
 	public static final int shiftLowGear_x = XBOX.B.id();
