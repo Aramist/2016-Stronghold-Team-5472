@@ -1,19 +1,16 @@
 
 package org.usfirst.frc.team5472.robot;
 
-import org.usfirst.frc.team5472.robot.commands.AutonomousCommand;
-
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Joystick.RumbleType;
 import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.internal.HardwareTimer;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -25,8 +22,7 @@ public class Robot extends IterativeRobot {
 	public static OI oi;
 	public static AHRS motion;
 	public static DriverStation driverStation = DriverStation.getInstance();
-	Command autonomousCommand = null;
-	public CameraServer server;
+	boolean autonomous = false;
 	public boolean triggerRunning = false;
 	public boolean cannonUp = false;
 	public boolean cannonActive = false;
@@ -55,24 +51,20 @@ public class Robot extends IterativeRobot {
 		RobotMap.driveBackRight.setInverted(true);
 		RobotMap.driveFrontRight.setInverted(true);
 		motion.zeroYaw();
-		new AutonomousCommand().start();
+		// if (autonomous)
+		// new AutonomousCommand();
 
 	}
 
 	@Override
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
-		// cams.get(currentCamera).getImage(i);
-		// CameraServer.getInstance().setImage(i);
 	}
 
 	@Override
 	public void teleopInit() {
-		CameraServer.getInstance().setQuality(40);
-		if (!CameraServer.getInstance().isAutoCaptureStarted())
-			CameraServer.getInstance().startAutomaticCapture("cam0");
-		if (autonomousCommand != null)
-			autonomousCommand.cancel();
+		// if (autonomousCommand != null)
+		// autonomousCommand.cancel();
 		RobotMap.armMotorLeft.setInverted(true);
 		RobotMap.driveBackLeft.setInverted(true);
 		RobotMap.driveBackRight.setInverted(true);
@@ -91,45 +83,25 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
-
-		// if (oi.getJoystickArray()[0].getRawButton(RobotMap.switchCamera)) {
-		// cams.get(currentCamera).stopCapture();
-		// ht.delay(0.1);
-		// currentCamera++;
-		// currentCamera %= cams.size();
-		// cams.get(currentCamera).startCapture();
-		// }
-		// cams.get(currentCamera).setExposureManual((int)
-		// SmartDashboard.getNumber("Exposure"));
-		// cams.get(currentCamera).setWhiteBalanceManual((int)
-		// SmartDashboard.getNumber("White Balance"));
-		// cams.get(currentCamera).setBrightness((int)
-		// SmartDashboard.getNumber("Brightness"));
-		// cams.get(currentCamera).getImage(i);
 		SmartDashboard.putNumber("Velocity", motion.getVelocityZ());
-		double pressureValue = (250.0 * (pressureSensor.getVoltage() / 5.0)) - 15.0;
+		double pressureValue = (250.0 * (pressureSensor.getVoltage() / 4.95)) - 15.0;
 		SmartDashboard.putNumber("Pressure", pressureValue);
 		SmartDashboard.putNumber("Yaw", motion.getYaw());
 		if (!oi.getJoystickArray()[0].getIsXbox())
 			joyd_1();
 		if (!oi.getJoystickArray()[1].getIsXbox())
 			joyd_2();
-
-		ht.delay(0.020D);
-
 	}
 
 	public void joyd_1() {
 
 		twistDrive();
 
-		if (oi.getJoystickArray()[0].getPOV(0) == RobotMap.armsUpControl
-				|| oi.getJoystickArray()[1].getPOV(0) == RobotMap.armsUpControl) {
+		if (oi.getJoystickArray()[0].getPOV(0) == RobotMap.armsUpControl) {
 			RobotMap.armMotorLeft.set(0.2);
 			RobotMap.armMotorRight.set(0.2);
 			return;
-		} else if (oi.getJoystickArray()[0].getPOV(0) == RobotMap.armsDownControl
-				|| oi.getJoystickArray()[1].getPOV(0) == RobotMap.armsDownControl) {
+		} else if (oi.getJoystickArray()[0].getPOV(0) == RobotMap.armsDownControl) {
 			RobotMap.armMotorLeft.set(-0.4);
 			RobotMap.armMotorRight.set(-0.4);
 		} else {
@@ -180,14 +152,14 @@ public class Robot extends IterativeRobot {
 
 		if (oi.getJoystickArray()[1].getRawAxis(RobotMap.spinOutAxisControl_x) >= RobotMap.spinOutThreshold_x
 				|| oi.getJoystickArray()[0].getRawButton(RobotMap.spinOutControl)) {
-			RobotMap.fireMotorRight.set(-1.00D);
-			RobotMap.fireMotorLeft.set(1.00D);
+			RobotMap.fireMotorRight.set(1.00D);
+			RobotMap.fireMotorLeft.set(-1.00D);
 			rumble(true, true);
 			SmartDashboard.putString("Firing Wheels", "forward");
 		} else if (oi.getJoystickArray()[1].getRawButton(RobotMap.spinInControl_x)
 				|| oi.getJoystickArray()[0].getRawButton(RobotMap.spinInControl)) {
-			RobotMap.fireMotorRight.set(1.00D);
-			RobotMap.fireMotorLeft.set(-1.00D);
+			RobotMap.fireMotorRight.set(-1.00D);
+			RobotMap.fireMotorLeft.set(1.00D);
 			rumble(false, true);
 			SmartDashboard.putString("Firing Wheels", "reverse");
 		} else {
@@ -199,10 +171,21 @@ public class Robot extends IterativeRobot {
 	}
 
 	public void joyd_2() {
-		if (oi.getJoystickArray()[1].getPOV() == 90) {
+		if (oi.getJoystickArray()[1].getPOV() == 0) {
 			RobotMap.shootingSolenoid.set(Value.kForward);
-		} else if (oi.getJoystickArray()[1].getPOV() == 270) {
+		} else if (oi.getJoystickArray()[1].getPOV() == 180) {
 			RobotMap.shootingSolenoid.set(Value.kReverse);
+			Timer.delay(0.08);
+			RobotMap.shootingSolenoid.set(Value.kOff);
+		}
+
+		if (oi.getJoystickArray()[1].getRawButton(RobotMap.trigger_2) && !this.triggerRunning) {
+			rumble(true, true);
+			RobotMap.fireSolenoid.set(true);
+			rumble(true, false);
+		} else {
+			if (RobotMap.fireSolenoid.get())
+				RobotMap.fireSolenoid.set(false);
 		}
 
 		if (oi.getJoystickArray()[1].getRawButton(RobotMap.spinInControl_2)) {
@@ -226,13 +209,6 @@ public class Robot extends IterativeRobot {
 		}
 	}
 
-	public void fire() {
-		if (oi.getJoystickArray()[1].getRawAxis(RobotMap.triggerAxisControl_x) >= RobotMap.triggerThreshold)
-			RobotMap.fireSolenoid.set(true);
-		else
-			RobotMap.fireSolenoid.set(false);
-	}
-
 	public void twistDrive() {
 		if (driver_2)
 			return;
@@ -240,7 +216,7 @@ public class Robot extends IterativeRobot {
 		double tankRight, tankLeft, twist;
 		double y = -ja[0].getY();
 		tankLeft = tankRight = y;
-		twist = -ja[0].getRawAxis(RobotMap.twistAxis);
+		twist = ja[0].getRawAxis(RobotMap.twistAxis);
 		if (y > 0.1 || y < -0.1)
 			if (twist < 0.3 && twist > -0.3)
 				twist = 0;

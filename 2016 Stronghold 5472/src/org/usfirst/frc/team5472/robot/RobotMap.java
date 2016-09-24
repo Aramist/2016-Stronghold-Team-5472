@@ -77,8 +77,9 @@ public class RobotMap {
 	public static final int basketUp_x = XBOX.A.id();
 	public static final int basketDown_x = XBOX.B.id();
 
-	public static final int spinInControl_2 = 1;
-	public static final int spinOutControl_2 = 1;
+	public static final int spinInControl_2 = 2;
+	public static final int spinOutControl_2 = 3;
+	public static final int trigger_2 = 1;
 
 	// Solenoids
 	public static final int fire = 0;
