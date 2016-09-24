@@ -113,7 +113,7 @@ public class Robot extends IterativeRobot {
 	public void xboxd_2() {
 
 		double y = oi.getJoystickArray()[1].getRawAxis(RobotMap.d_2y);
-		double t = oi.getJoystickArray()[1].getRawAxis(RobotMap.d_2x);
+		double t = -oi.getJoystickArray()[1].getRawAxis(RobotMap.d_2x);
 
 		double tankRight, tankLeft, twist;
 		tankLeft = tankRight = -y;
@@ -216,7 +216,7 @@ public class Robot extends IterativeRobot {
 		double tankRight, tankLeft, twist;
 		double y = -ja[0].getY();
 		tankLeft = tankRight = y;
-		twist = ja[0].getRawAxis(RobotMap.twistAxis);
+		twist = -ja[0].getRawAxis(RobotMap.twistAxis);
 		if (y > 0.1 || y < -0.1)
 			if (twist < 0.3 && twist > -0.3)
 				twist = 0;
