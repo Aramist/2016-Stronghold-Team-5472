@@ -150,6 +150,8 @@ public class Robot extends IterativeRobot {
 			}
 		}
 
+		RobotMap.aimMotor.set(oi.getJoystickArray()[1].getRawAxis(RobotMap.aimAxisControl) / 2.0);
+
 		new JoystickButton(oi.getJoystickArray()[1], RobotMap.basketUp_x).whenPressed(new BasketUpCommand());
 		new JoystickButton(oi.getJoystickArray()[1], RobotMap.basketDown_x).whenPressed(new BasketDownCommand());
 

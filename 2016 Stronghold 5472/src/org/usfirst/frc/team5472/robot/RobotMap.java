@@ -39,8 +39,9 @@ public class RobotMap {
 	// TODO replace placeholder
 
 	// Motors: Firing
-	private static final int fiMotor = 5;
-	private static final int fMotor = 4;
+	private static final int fiMotor = 4;
+	private static final int fMotor = 5;
+	private static final int aim = 6;
 
 	// Motor Definitions
 	public static final VictorSP driveFrontLeft = new VictorSP(mFrontLeft);
@@ -49,6 +50,7 @@ public class RobotMap {
 	public static final VictorSP driveBackRight = new VictorSP(mBackRight);
 	public static final VictorSP fireMotor = new VictorSP(fiMotor);
 	public static final VictorSP feedMotor = new VictorSP(fMotor);
+	public static final VictorSP aimMotor = new VictorSP(aim);
 
 	// Driver 1 Assignments
 	public static final int feedControl = 5;
