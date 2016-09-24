@@ -3,9 +3,9 @@ package org.usfirst.frc.team5472.robot.commands;
 import org.usfirst.frc.team5472.robot.Robot;
 import org.usfirst.frc.team5472.robot.RobotMap;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.internal.HardwareTimer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class AutonomousCommand extends Command {
 
@@ -16,35 +16,34 @@ public class AutonomousCommand extends Command {
 
 	@Override
 	protected void initialize() {
-
 		Robot.motion.zeroYaw();
 		startingYaw = 0;
 	}
 
 	@Override
 	protected void execute() {
-		ht.delay(1);
+		System.out.println("Starting autonomous execution");
 		Robot.motion.zeroYaw();
-
+		RobotMap.shootingSolenoid.set(Value.kForward);
 		RobotMap.armMotorLeft.set(0.1);
 		RobotMap.armMotorRight.set(0.1);
-		HardwareTimer ht = new HardwareTimer();
-		ht.delay(1.5);
+		ht.delay(1.0);
 		RobotMap.driveFrontLeft.set(-1.0D);
 		RobotMap.driveFrontRight.set(1.0D);
 		RobotMap.driveBackLeft.set(-1.0D);
 		RobotMap.driveBackRight.set(1.0D);
-		SmartDashboard.putBoolean("Autonomous Motors", true);
+		System.out.println("Starting Motor loop");
 		motorStart = System.currentTimeMillis();
 		loopMotors();
-		SmartDashboard.putBoolean("Autonomous Motors", false);
+		System.out.println("Ending Motor loop");
 		RobotMap.driveFrontLeft.set(0.0);
 		RobotMap.driveFrontRight.set(0.0);
-		RobotMap.driveBackLeft.set(0.0D);
-		RobotMap.driveBackRight.set(0.0D);
+		RobotMap.driveBackLeft.set(0.0);
+		RobotMap.driveBackRight.set(0.0);
 		RobotMap.armMotorLeft.set(0.0);
 		RobotMap.armMotorRight.set(0.0);
 		finished = true;
+		System.out.println("Autonomous ended");
 	}
 
 	public void loopMotors() {
@@ -59,7 +58,7 @@ public class AutonomousCommand extends Command {
 		RobotMap.driveFrontRight.set(tankRight);
 		RobotMap.driveBackLeft.set(-tankLeft);
 		RobotMap.driveBackRight.set(tankRight);
-		if (Math.abs(System.currentTimeMillis() - this.motorStart) >= 5000L)
+		if (Math.abs(System.currentTimeMillis() - this.motorStart) >= 500L)
 			return;
 		else {
 			ht.delay(0.020);
@@ -75,12 +74,12 @@ public class AutonomousCommand extends Command {
 
 	@Override
 	protected void end() {
-
+		finished = true;
 	}
 
 	@Override
 	protected void interrupted() {
-
+		end();
 	}
 
 }

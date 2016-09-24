@@ -1,6 +1,8 @@
 
 package org.usfirst.frc.team5472.robot;
 
+import org.usfirst.frc.team5472.robot.commands.AutonomousCommand;
+
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.AnalogInput;
@@ -22,7 +24,7 @@ public class Robot extends IterativeRobot {
 	public static OI oi;
 	public static AHRS motion;
 	public static DriverStation driverStation = DriverStation.getInstance();
-	boolean autonomous = false;
+	boolean autonomous = true;
 	public boolean triggerRunning = false;
 	public boolean cannonUp = false;
 	public boolean cannonActive = false;
@@ -51,6 +53,8 @@ public class Robot extends IterativeRobot {
 		RobotMap.driveBackRight.setInverted(true);
 		RobotMap.driveFrontRight.setInverted(true);
 		motion.zeroYaw();
+		if (autonomous)
+			new AutonomousCommand().start();
 		// if (autonomous)
 		// new AutonomousCommand();
 
