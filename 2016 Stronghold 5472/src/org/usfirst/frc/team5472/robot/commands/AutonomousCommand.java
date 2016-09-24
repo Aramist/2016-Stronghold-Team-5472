@@ -24,7 +24,7 @@ public class AutonomousCommand extends Command {
 	protected void execute() {
 		System.out.println("Starting autonomous execution");
 		Robot.motion.zeroYaw();
-		RobotMap.shootingSolenoid.set(Value.kForward);
+		RobotMap.shootingSolenoid.set(Value.kReverse);
 		RobotMap.armMotorLeft.set(0.1);
 		RobotMap.armMotorRight.set(0.1);
 		ht.delay(1.0);
