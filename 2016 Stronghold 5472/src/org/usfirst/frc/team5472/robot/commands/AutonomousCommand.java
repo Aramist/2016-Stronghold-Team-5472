@@ -58,7 +58,7 @@ public class AutonomousCommand extends Command {
 		RobotMap.driveFrontRight.set(tankRight);
 		RobotMap.driveBackLeft.set(-tankLeft);
 		RobotMap.driveBackRight.set(tankRight);
-		if (Math.abs(System.currentTimeMillis() - this.motorStart) >= 500L)
+		if (Math.abs(System.currentTimeMillis() - this.motorStart) >= 4000L)
 			return;
 		else {
 			ht.delay(0.020);
