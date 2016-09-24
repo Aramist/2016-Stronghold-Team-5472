@@ -73,22 +73,18 @@ public class RobotMap {
 	public static final int d_2y = XBOX.LYAXIS.id();
 	public static final int d_2x = XBOX.LXAXIS.id();
 
-	public static final int liftUpControl_x = XBOX.Y.id();
-	public static final int liftDownControl_x = XBOX.A.id();
-	public static final int aimAxisControl = XBOX.RYAXIS.id();
-	public static final int slowAimAxisControl = XBOX.LYAXIS.id();
-	public static final int cancelControl_x = XBOX.B.id();
 	public static final int spinInControl_x = XBOX.LB.id();
-	public static final int swivelControl_x = XBOX.X.id();
 	public static final int basketUp_x = XBOX.A.id();
 	public static final int basketDown_x = XBOX.B.id();
-	
+
+	public static final int spinInControl_2 = 1;
+	public static final int spinOutControl_2 = 1;
+
 	// Solenoids
 	public static final int fire = 0;
 	public static final int shooterSolenoidA = 1;
 	public static final int shooterSolenoidB = 2;
-	
-	
+
 	// Solenoid Definitions
 	public static final Solenoid fireSolenoid = new Solenoid(fire);
 	public static final DoubleSolenoid shootingSolenoid = new DoubleSolenoid(shooterSolenoidA, shooterSolenoidB);

@@ -2,19 +2,17 @@
 package org.usfirst.frc.team5472.robot;
 
 import org.usfirst.frc.team5472.robot.commands.AutonomousCommand;
-import org.usfirst.frc.team5472.robot.commands.BasketDownCommand;
-import org.usfirst.frc.team5472.robot.commands.BasketUpCommand;
 
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Joystick.RumbleType;
 import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.internal.HardwareTimer;
@@ -114,8 +112,8 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("Yaw", motion.getYaw());
 		if (!oi.getJoystickArray()[0].getIsXbox())
 			joyd_1();
-		if (oi.getJoystickArray()[1].getIsXbox())
-			xboxd_2();
+		if (!oi.getJoystickArray()[1].getIsXbox())
+			joyd_2();
 
 		ht.delay(0.020D);
 
@@ -141,9 +139,6 @@ public class Robot extends IterativeRobot {
 	}
 
 	public void xboxd_2() {
-		
-		new JoystickButton(oi.getJoystickArray()[1], RobotMap.basketUp_x).whenPressed(new BasketUpCommand());
-		new JoystickButton(oi.getJoystickArray()[1], RobotMap.basketDown_x).whenPressed(new BasketDownCommand());
 
 		double y = oi.getJoystickArray()[1].getRawAxis(RobotMap.d_2y);
 		double t = oi.getJoystickArray()[1].getRawAxis(RobotMap.d_2x);
@@ -200,6 +195,25 @@ public class Robot extends IterativeRobot {
 			RobotMap.fireMotorLeft.set(0.0D);
 			rumble(false, false);
 			SmartDashboard.putString("Firing Wheels", "off");
+		}
+	}
+
+	public void joyd_2() {
+		if (oi.getJoystickArray()[1].getPOV() == 90) {
+			RobotMap.shootingSolenoid.set(Value.kForward);
+		} else if (oi.getJoystickArray()[1].getPOV() == 270) {
+			RobotMap.shootingSolenoid.set(Value.kReverse);
+		}
+
+		if (oi.getJoystickArray()[1].getRawButton(RobotMap.spinInControl_2)) {
+			RobotMap.fireMotorLeft.set(1.0);
+			RobotMap.fireMotorRight.set(-1.0);
+		} else if (oi.getJoystickArray()[1].getRawButton(RobotMap.spinOutControl_2)) {
+			RobotMap.fireMotorLeft.set(-1.0);
+			RobotMap.fireMotorRight.set(1.0);
+		} else {
+			RobotMap.fireMotorLeft.set(0.00);
+			RobotMap.fireMotorRight.set(0.00);
 		}
 	}
 
