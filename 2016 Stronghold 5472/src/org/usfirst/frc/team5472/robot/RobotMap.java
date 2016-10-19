@@ -80,8 +80,10 @@ public class RobotMap {
 	public static final int gear = 0;
 	public static final int shooterSolenoidA = 1;
 	public static final int shooterSolenoidB = 2;
-
+	public static final int aimingSolenoidA = 3;
+	public static final int aimingSolenoidB = 4;
 	// Solenoid Definitions
 	public static final Solenoid gearSolenoid = new Solenoid(gear);
 	public static final DoubleSolenoid shootingSolenoid = new DoubleSolenoid(shooterSolenoidA, shooterSolenoidB);
+	public static final DoubleSolenoid aimingSolenoid = new DoubleSolenoid(aimingSolenoidA, aimingSolenoidB);
 }

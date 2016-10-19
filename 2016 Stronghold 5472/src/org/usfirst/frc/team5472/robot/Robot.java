@@ -91,21 +91,6 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
-
-		// if (oi.getJoystickArray()[0].getRawButton(RobotMap.switchCamera)) {
-		// cams.get(currentCamera).stopCapture();
-		// ht.delay(0.1);
-		// currentCamera++;
-		// currentCamera %= cams.size();
-		// cams.get(currentCamera).startCapture();
-		// }
-		// cams.get(currentCamera).setExposureManual((int)
-		// SmartDashboard.getNumber("Exposure"));
-		// cams.get(currentCamera).setWhiteBalanceManual((int)
-		// SmartDashboard.getNumber("White Balance"));
-		// cams.get(currentCamera).setBrightness((int)
-		// SmartDashboard.getNumber("Brightness"));
-		// cams.get(currentCamera).getImage(i);
 		SmartDashboard.putNumber("Velocity", motion.getVelocityZ());
 		double pressureValue = (250.0 * (pressureSensor.getVoltage() / 4.95)) - 25.0;
 		SmartDashboard.putNumber("Pressure", pressureValue);
@@ -146,8 +131,29 @@ public class Robot extends IterativeRobot {
 				Timer.delay(0.05);
 			}
 		}
-
-		RobotMap.aimMotor.set(0.2 + oi.getJoystickArray()[1].getRawAxis(RobotMap.aimAxisControl) / 2.0);
+		
+		if (oi.getJoystickArray()[1].getPOV() == 0){
+			if(!RobotMap.aimingSolenoid.get().equals(Value.kForward)) {
+				RobotMap.aimingSolenoid.set(Value.kForward);
+				RobotMap.aimMotor.set(0.2);
+				Timer.delay(0.01);
+			}
+		}
+		
+		if(oi.getJoystickArray()[1].getPOV() == 180){
+			if(!RobotMap.shootingSolenoid.get().equals(Value.kReverse)) {
+				RobotMap.aimingSolenoid.set(Value.kReverse);
+				RobotMap.aimMotor.set(-0.2);
+				Timer.delay(0.01);
+			}
+		}
+		if(Math.abs(RobotMap.aimMotor.get()) == 0.2){
+			if(oi.getJoystickArray()[1].getRawAxis(RobotMap.aimAxisControl) > 0.08){
+				RobotMap.aimMotor.set(0.2 + oi.getJoystickArray()[1].getRawAxis(RobotMap.aimAxisControl) / 2.0);
+			}
+		}else{
+			RobotMap.aimMotor.set(0.2 + oi.getJoystickArray()[1].getRawAxis(RobotMap.aimAxisControl) / 2.0);
+		}
 
 		double y = oi.getJoystickArray()[1].getRawAxis(RobotMap.d_2y);
 		double t = oi.getJoystickArray()[1].getRawAxis(RobotMap.d_2x);
